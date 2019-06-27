@@ -92,6 +92,14 @@ function add_users_requested_submenu() {
     , 'simple_jobs_users_requested'
     , 'simple_jobs_users_requested_callback'
   );
+  // add_submenu_page( 
+  //     'edit.php?post_type=simple_jobs'
+  //   , 'Email Templates' 
+  //   , 'Email Templates'
+  //   , 'manage_options'
+  //   , 'simple_jobs_email_templates'
+  //   , 'simple_jobs_email_templates_callback'
+  // );
 }
 
 /**
@@ -136,7 +144,7 @@ function simple_jobs_users_requested_callback() {
 						echo "<tr>";
 						echo "<td>".($key+1)."</td>";
 						echo "<td>".$currentUser->data->user_email."</td>";
-						echo "<td>".$permalink."</td>";
+						echo "<td><a href='".$permalink."' targe='_blank'>".$permalink."</a></td>";
 						echo "<td>
 								<button data-userId=".$currentUserId." data-postId=".$postId." class='button button-primary adminApproveViewLeadBtn'>Approve</button> 
 								<button data-userId=".$currentUserId." data-postId=".$postId." class='button adminDeclineViewLeadBtn'>Deny</button></td>";
@@ -156,6 +164,47 @@ function simple_jobs_users_requested_callback() {
 
 }
 
+/**
+* Callback function for simple_jobs_email_templates
+**/
+function simple_jobs_email_templates_callback() {
+	global $title;
+	$subject1 = "Request To View Lead Information";
+	$message1 = "Your request to view details for $jobTitle successfully submitted, we will check your request and made descission. You will also be notified on email also.";
+	$subject2 = "Decision on View Lead Information";
+	$message2 = "Your request to view lead information for $postTitle has been successfully approved";
+
+	echo "<div class='wrap'><h3>$title</h3>";
+	echo "<form method='post' action=''>
+		<table class='emailTemplatesTable widefat striped'>
+			<thead>
+				<tr>
+					<th width='20%'>Action</th>
+					<th width='20%'>Subject</th>
+					<th width='60%'>Message</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>When user requested for lead information</td>
+					<td><input type='text' name='request_for_lead_subject' /></td>
+					<td><textarea name='request_for_lead' cols='4'></textarea></td>
+				</tr>
+				<tr>
+					<td>When user approved to view lead information</td>
+					<td><input type='text' name='approve_for_lead_subject' /></td>
+					<td><textarea name='approve_for_lead' cols='4'></textarea></td>
+				</tr>
+				<tr>
+					<td>When user rejected to view lead information</td>
+					<td><input type='text' name='reject_for_lead_subject' /></td>
+					<td><textarea name='reject_for_lead' cols='4'></textarea></td>
+				</tr>
+				<tr><td align='center' colspan='3'><button type='submit' class='button button-primary'>Submit</button></td></tr>
+			</tbody>
+		</table>
+	</form></div>";
+}
 
 /**
 * Creating the taxonomies for Job type
@@ -313,6 +362,7 @@ function simple_job_listings_set_template( $template ){
 function simple_jobs_enqueue_script() {
     wp_enqueue_script( 'simple_jobs_js', plugin_dir_url( __FILE__ ) . 'js/script.js', array('jquery'), '1.0' );
     wp_localize_script( 'simple_jobs_js', 'simple_jobs_js_var', array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'we_value' => 1234 ) );
+    wp_enqueue_style( 'simple_jobs_admin', plugin_dir_url( __FILE__ ) . 'css/admin.css');
 }
 add_action('wp_enqueue_scripts', 'simple_jobs_enqueue_script');
 add_action('admin_enqueue_scripts', 'simple_jobs_enqueue_script');
@@ -396,7 +446,7 @@ function show_common_fields( $postId ) {
 
 	return '<div class="col-md-12">
 		<div class="row">
-			<div class="col-md-12"><a href="'.$link.'" >'.$title.'</a></div>
+			<h1 class="post-title entry-title "><a href="'.$link.'" >'.$title.'</a></h1>
 			<div class="col-md-12">'.$categoryHtml.'</div>
 		</div>
 		<div class="row">
@@ -437,10 +487,10 @@ function action_request_lead_details_callback() {
 		if( $_POST['string'] == "approve" ) {
 			$string 	= "approved_user_id";
 			$emailBody  = "Your request to view lead information for $postTitle has been successfully approved
-			<br/>client_name: $client_name<br/>
-			<br/>client_address: $client_address<br/>
-			<br/>client_email: $client_email<br/>
-			<br/>client_telephone_number: $client_telephone_number<br/>";
+			\nclient_name: $client_name\n
+			\nclient_address: $client_address\n
+			\nclient_email: $client_email\n
+			\nclient_telephone_number: $client_telephone_number\n";
 		} 
 		else if( $_POST['string'] == "decline" ) {
 			$string	   = "rejected_user_id";
