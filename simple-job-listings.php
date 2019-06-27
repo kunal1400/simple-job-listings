@@ -342,6 +342,9 @@ function request_additional_fields_button( $postId ) {
 				return "<button data-postId=".$postId." data-userId=".$currentUserId." class='requestLeadDetails'>Request Lead Details</button>";
 			}
 		}
+		else {
+			return "<button data-postId=".$postId." data-userId=".$currentUserId." class='requestLeadDetails'>Request Lead Details</button>";
+		}
 
 	}
 	else {
@@ -368,6 +371,40 @@ function show_fields_after_registration( $postId ) {
 			return;
 		}
 	}
+}
+
+function show_common_fields( $postId ) {
+	$title 		  = get_the_title( $postId );
+	$link 		  = get_the_permalink( $postId );
+	$post_date 	  = get_the_date("", $postId);
+	$job_location = get_post_meta($postId, '_job_location', ARRAY_A);
+	$job_salary   = get_post_meta($postId, '_job_salary', ARRAY_A);
+	$categories   = get_the_terms( $postId, 'simple_job_categories' );	
+	$categoryHtml = "";
+
+	if($categories) {
+		foreach ($categories as $key => $category) {
+			$categoryHtml .= "<span>".$category->name."</span>";
+		}
+	}
+
+	if( is_single()	) {
+		$description  = get_the_content($postId);
+	} else {
+		$description  = get_the_excerpt($postId);		
+	}
+
+	return '<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-12"><a href="'.$link.'" >'.$title.'</a></div>
+			<div class="col-md-12">'.$categoryHtml.'</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">Date: '.$post_date.'</div>
+			<div class="col-md-4">Location: '.$job_location.'</div>
+			<div class="col-md-4">Salary: '.$job_salary.'</div>
+		</div>
+	</div>';
 }
 
 /**
