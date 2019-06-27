@@ -434,7 +434,12 @@ function show_common_fields( $postId ) {
 
 	if($categories) {
 		foreach ($categories as $key => $category) {
-			$categoryHtml .= "<span>".$category->name."</span>";
+			if($key == 0) {
+				$categoryHtml .= "<span class='blog-categories'>".$category->name."</span>";
+			}
+			else {
+				$categoryHtml .= "<span class='blog-categories'>, ".$category->name."</span>";
+			}
 		}
 	}
 
