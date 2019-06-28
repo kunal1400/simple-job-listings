@@ -37,6 +37,28 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'PLUGIN_NAME_VERSION', '1.0.0' );
 
 
+function write_here_activation_actions() {
+	do_action( 'wp_writehere_extension_activation' );	
+}
+register_activation_hook( __FILE__, 'write_here_activation_actions' );
+
+
+function write_here_default_options(){
+    // Subjects
+	update_option("request_lead_info_subject", "Request To View Lead Information");
+	update_option("approve_lead_info_subject", "Decision to view Lead Information");
+	update_option("reject_lead_info_subject", "Decision to view Lead Information");
+	// email body
+	update_option("request_lead_info_message", "Your request to view details for {{jobTitle}} successfully submitted, we will check your request and made descission. You will also be notified on email also.");
+	update_option("approve_lead_info_message", "Your request to view lead information for {{jobTitle}} has been successfully approved \n below are the lead information:\nclient_name: {{clientName}}
+		\nclient_address: {{clientAddress}}
+		\nclient_email:  {{clientEmail}}
+		\nclient_telephone_number: {{clientMobile}}");
+	update_option("reject_lead_info_message", "Your request to view lead information for {{jobTitle}} has been rejected");
+}
+add_action( 'wp_writehere_extension_activation', 'write_here_default_options' );
+
+
 /**
 * Registering the custom posttype for Jobs
 **/
@@ -92,14 +114,14 @@ function add_users_requested_submenu() {
     , 'simple_jobs_users_requested'
     , 'simple_jobs_users_requested_callback'
   );
-  // add_submenu_page( 
-  //     'edit.php?post_type=simple_jobs'
-  //   , 'Email Templates' 
-  //   , 'Email Templates'
-  //   , 'manage_options'
-  //   , 'simple_jobs_email_templates'
-  //   , 'simple_jobs_email_templates_callback'
-  // );
+  add_submenu_page( 
+      'edit.php?post_type=simple_jobs'
+    , 'Email Templates' 
+    , 'Email Templates'
+    , 'manage_options'
+    , 'simple_jobs_email_templates'
+    , 'simple_jobs_email_templates_callback'
+  );
 }
 
 /**
@@ -169,13 +191,16 @@ function simple_jobs_users_requested_callback() {
 **/
 function simple_jobs_email_templates_callback() {
 	global $title;
-	$subject1 = "Request To View Lead Information";
-	$message1 = "Your request to view details for $jobTitle successfully submitted, we will check your request and made descission. You will also be notified on email also.";
-	$subject2 = "Decision on View Lead Information";
-	$message2 = "Your request to view lead information for $postTitle has been successfully approved";
+	$request_lead_info_subject 	= get_option("request_lead_info_subject", "request lead info subject");
+	$approve_lead_info_subject 	= get_option("approve_lead_info_subject", "approve lead info subject");
+	$reject_lead_info_subject 	= get_option("reject_lead_info_subject", "reject lead info subject");
+	$request_lead_info_message 	= get_option("request_lead_info_message", "request lead info message");
+	$approve_lead_info_message 	= get_option("approve_lead_info_message", "approve lead info message");
+	$reject_lead_info_message 	= get_option("reject_lead_info_message", "reject lead info message");
 
 	echo "<div class='wrap'><h3>$title</h3>";
 	echo "<form method='post' action=''>
+		<h3>Dynamic variables: {{jobTitle}}, {{clientName}}, {{clientEmail}}, {{clientMobile}}, {{clientAddress}}</h3>
 		<table class='emailTemplatesTable widefat striped'>
 			<thead>
 				<tr>
@@ -187,18 +212,18 @@ function simple_jobs_email_templates_callback() {
 			<tbody>
 				<tr>
 					<td>When user requested for lead information</td>
-					<td><input type='text' name='request_for_lead_subject' /></td>
-					<td><textarea name='request_for_lead' cols='4'></textarea></td>
+					<td><input type='text' name='request_for_lead_subject' value='".$request_lead_info_subject."' /></td>
+					<td><textarea name='request_for_lead' cols='4'>".$request_lead_info_message."</textarea></td>
 				</tr>
 				<tr>
 					<td>When user approved to view lead information</td>
-					<td><input type='text' name='approve_for_lead_subject' /></td>
-					<td><textarea name='approve_for_lead' cols='4'></textarea></td>
+					<td><input type='text' name='approve_for_lead_subject' value='".$approve_lead_info_subject."' /></td>
+					<td><textarea name='approve_for_lead' cols='4'>".$approve_lead_info_message."</textarea></td>
 				</tr>
 				<tr>
 					<td>When user rejected to view lead information</td>
-					<td><input type='text' name='reject_for_lead_subject' /></td>
-					<td><textarea name='reject_for_lead' cols='4'></textarea></td>
+					<td><input type='text' name='reject_for_lead_subject' value='".$reject_lead_info_subject."' /></td>
+					<td><textarea name='reject_for_lead' cols='4'>".$reject_lead_info_message."</textarea></td>
 				</tr>
 				<tr><td align='center' colspan='3'><button type='submit' class='button button-primary'>Submit</button></td></tr>
 			</tbody>
@@ -550,6 +575,13 @@ function request_lead_details_callback() {
 		$arrayToStore = array_unique($arrayToStore);
 
 		$updateuserMetaFlag = update_post_meta( $_POST['postId'], 'requested_users_id', json_encode( array_values($arrayToStore) ) );
+
+		// $request_lead_info_subject 	= get_option("request_lead_info_subject", "request lead info subject");
+		// $request_lead_info_message 	= get_option("request_lead_info_message", "request lead info message");
+		//$approve_lead_info_subject 	= get_option("approve_lead_info_subject", "approve lead info subject");
+		//$reject_lead_info_subject 	= get_option("reject_lead_info_subject", "reject lead info subject");
+		//$approve_lead_info_message 	= get_option("approve_lead_info_message", "approve lead info message");
+		//$reject_lead_info_message 	= get_option("reject_lead_info_message", "reject lead info message");
 
 		wp_mail($currentUserEmail, "Request To View Lead Information" ,"Your request to view details for $jobTitle successfully submitted, we will check your request and made descission. You will also be notified on email also.");
 	}	
