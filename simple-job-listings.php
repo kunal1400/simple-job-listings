@@ -200,6 +200,7 @@ function simple_jobs_email_templates_callback() {
 
 	echo "<div class='wrap'><h3>$title</h3>";
 	echo "<form method='post' action=''>
+		<input type='hidden' name='email_templates' value='set' />
 		<h3>Dynamic variables: {{jobTitle}}, {{clientName}}, {{clientEmail}}, {{clientMobile}}, {{clientAddress}}</h3>
 		<table class='emailTemplatesTable widefat striped'>
 			<thead>
@@ -230,6 +231,18 @@ function simple_jobs_email_templates_callback() {
 		</table>
 	</form></div>";
 }
+
+
+
+if( !empty($_POST['email_templates']) && $_POST['email_templates'] == "set" ) {
+	update_option("request_lead_info_subject", $_POST['request_for_lead_subject']);
+	update_option("request_lead_info_message", $_POST['request_for_lead']);
+	update_option("approve_lead_info_subject", $_POST['approve_for_lead_subject']);
+	update_option("reject_lead_info_subject", $_POST['reject_for_lead_subject']);
+	update_option("approve_lead_info_message", $_POST['approve_for_lead']);
+	update_option("reject_lead_info_message", $_POST['reject_for_lead']);	
+}
+
 
 /**
 * Creating the taxonomies for Job type
