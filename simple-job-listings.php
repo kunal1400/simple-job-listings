@@ -437,10 +437,10 @@ function show_fields_after_registration( $postId ) {
 			$client_address = get_post_meta($postId, '_client_address', ARRAY_A);
 			$client_email 	= get_post_meta($postId, '_client_email', ARRAY_A);
 			$client_telephone_number = get_post_meta($postId, '_client_telephone_number', ARRAY_A);
-			return "<div>client_name: $client_name<div/>
-			<div>client_address: $client_address<div/>
-			<div>client_email: $client_email<div/>
-			<div>client_telephone_number: $client_telephone_number<div/>";
+			return "<div>client Name: $client_name<div/>
+			<div>client Address: $client_address<div/>
+			<div>client Email: $client_email<div/>
+			<div>client Telephone Number: $client_telephone_number<div/>";
 		}
 		else {
 			return;
@@ -469,9 +469,9 @@ function show_common_fields( $postId ) {
 	}
 
 	if( is_single()	) {
-		$description  = get_the_content($postId);
+		$description = get_the_content($postId);
 	} else {
-		$description  = get_the_excerpt($postId);		
+		$description = get_the_excerpt($postId);		
 	}
 
 	return '<div class="col-md-12">
@@ -483,6 +483,9 @@ function show_common_fields( $postId ) {
 			<div class="col-md-4">Date: '.$post_date.'</div>
 			<div class="col-md-4">Location: '.$job_location.'</div>
 			<div class="col-md-4">Salary: '.$job_salary.'</div>
+		</div>
+		<div class="row">
+			<div class="row">'.$description.'</div>
 		</div>
 	</div>';
 }
@@ -514,17 +517,31 @@ function action_request_lead_details_callback() {
 
 		$emailBody = "";
 		$string = "approved_user_id";
+
+		$approve_lead_info_message = get_option("approve_lead_info_message", "approve lead info message");			
+		$approve_lead_info_message = str_replace("{{jobTitle}}", $client_name, $approve_lead_info_message);
+		$approve_lead_info_message = str_replace("{{jobTitle}}", $client_address, $approve_lead_info_message);
+		$approve_lead_info_message = str_replace("{{jobTitle}}", $client_email, $approve_lead_info_message);
+		$approve_lead_info_message = str_replace("{{jobTitle}}", $client_telephone_number, $approve_lead_info_message);
+
+		$reject_lead_info_message = get_option("reject_lead_info_message", "reject lead info message");			
+		$reject_lead_info_message = str_replace("{{jobTitle}}", $client_name, $reject_lead_info_message);
+		$reject_lead_info_message = str_replace("{{jobTitle}}", $client_address, $reject_lead_info_message);
+		$reject_lead_info_message = str_replace("{{jobTitle}}", $client_email, $reject_lead_info_message);
+		$reject_lead_info_message = str_replace("{{jobTitle}}", $client_telephone_number, $reject_lead_info_message);
+
+		$approve_lead_info_subject 	= get_option("approve_lead_info_subject", "approve lead info subject");
+		$reject_lead_info_subject 	= get_option("reject_lead_info_subject", "reject lead info subject");
+
 		if( $_POST['string'] == "approve" ) {
-			$string 	= "approved_user_id";
-			$emailBody  = "Your request to view lead information for $postTitle has been successfully approved
-			\nclient_name: $client_name\n
-			\nclient_address: $client_address\n
-			\nclient_email: $client_email\n
-			\nclient_telephone_number: $client_telephone_number\n";
+			$subject 	= $approve_lead_info_subject;
+			$string 	= "approved_user_id";			
+			$emailBody  = $approve_lead_info_message;
 		} 
 		else if( $_POST['string'] == "decline" ) {
+			$subject 	= $reject_lead_info_subject;
 			$string	   = "rejected_user_id";
-			$emailBody = "Your request to view lead information for $postTitle has been rejected, please try again";
+			$emailBody = $reject_lead_info_message;
 		}
 		
 		// Getting all old requested jobs
@@ -538,9 +555,9 @@ function action_request_lead_details_callback() {
 		$arrayToStore[] = $_POST['userId'];
 
 		$arrayToStore = array_unique($arrayToStore);
-		$updateuserMetaFlag = update_post_meta( $postId, $string, json_encode( array_values($arrayToStore) ) );
-			
-		wp_mail($currentUserEmail, "Decision on View Lead Information", $emailBody);
+		$updateuserMetaFlag = update_post_meta( $postId, $string, json_encode( array_values($arrayToStore) ) );		
+
+		wp_mail($currentUserEmail, $subject, $emailBody);
 	}
 	wp_die();
 }
@@ -576,14 +593,17 @@ function request_lead_details_callback() {
 
 		$updateuserMetaFlag = update_post_meta( $_POST['postId'], 'requested_users_id', json_encode( array_values($arrayToStore) ) );
 
-		// $request_lead_info_subject 	= get_option("request_lead_info_subject", "request lead info subject");
-		// $request_lead_info_message 	= get_option("request_lead_info_message", "request lead info message");
+		$request_lead_info_subject = get_option("request_lead_info_subject", "request lead info subject");
+		$request_lead_info_message = get_option("request_lead_info_message", "request lead info message");
+		$request_lead_info_subject = str_replace("{{jobTitle}}", $jobTitle, $request_lead_info_subject);
+		$request_lead_info_message = str_replace("{{jobTitle}}", $jobTitle, $request_lead_info_message);
+
 		//$approve_lead_info_subject 	= get_option("approve_lead_info_subject", "approve lead info subject");
 		//$reject_lead_info_subject 	= get_option("reject_lead_info_subject", "reject lead info subject");
 		//$approve_lead_info_message 	= get_option("approve_lead_info_message", "approve lead info message");
 		//$reject_lead_info_message 	= get_option("reject_lead_info_message", "reject lead info message");
 
-		wp_mail($currentUserEmail, "Request To View Lead Information" ,"Your request to view details for $jobTitle successfully submitted, we will check your request and made descission. You will also be notified on email also.");
+		wp_mail($currentUserEmail, $request_lead_info_subject, $request_lead_info_message);
 	}	
 	wp_die();
 }
