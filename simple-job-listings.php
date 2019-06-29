@@ -571,12 +571,8 @@ function action_request_lead_details_callback() {
 
 		$arrayToStore = array_unique($arrayToStore);
 		$updateuserMetaFlag = update_post_meta( $postId, $string, json_encode( array_values($arrayToStore) ) );		
-		
-		echo $subject;
-		echo  "\n";
-		echo $emailBody;
-
-		//wp_mail($currentUserEmail, $subject, $emailBody);
+			
+		wp_mail($currentUserEmail, $subject, $emailBody);
 	}
 	wp_die();
 }
