@@ -539,7 +539,7 @@ function action_request_lead_details_callback() {
 		$approve_lead_info_message = str_replace("{{clientMobile}}", $client_telephone_number, $approve_lead_info_message);
 
 		$reject_lead_info_message = get_option("reject_lead_info_message", "reject lead info message");
-		$approve_lead_info_message = str_replace("{{jobTitle}}", $postTitle, $approve_lead_info_message);	
+		$approve_lead_info_message = str_replace("{{jobTitle}}", $postTitle, $reject_lead_info_message);	
 		$reject_lead_info_message = str_replace("{{clientName}}", $client_name, $reject_lead_info_message);
 		$reject_lead_info_message = str_replace("{{clientAddress}}", $client_address, $reject_lead_info_message);
 		$reject_lead_info_message = str_replace("{{clientEmail}}", $client_email, $reject_lead_info_message);
