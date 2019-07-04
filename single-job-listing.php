@@ -1,16 +1,22 @@
 <?php
+
+if( !is_user_logged_in() ) {
+	wp_redirect( home_url() );
+	exit;
+}
+
 get_header();
 ?>
-<section id="primary" class="container">
-	<main id="main" class="row">
+<section id="jobDataSection" class="container">
+	<main id="jobDataMain" class="row">
 		<?php
 		/* Start the Loop */
 		while ( have_posts() ) :
 			the_post();
 			?>
-			<article id="post-<?php the_ID(); ?>" class="col-md-12">
-				<div><?php echo show_common_fields( get_the_ID() ) ?></div>
-				<div class="commonFieldsSection">
+			<article id="post-<?php the_ID(); ?>" class="col-md-12 jobData">
+				<div class="commonFieldsSection"><?php echo show_common_fields( get_the_ID() ) ?></div>
+				<div class="approvedFieldsSection">
 					<?php echo show_fields_after_registration( get_the_ID() ) ?>
 				</div>
 				<div class="requestedFieldsSection">

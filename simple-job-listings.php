@@ -406,6 +406,14 @@ function simple_jobs_enqueue_script() {
 add_action('wp_enqueue_scripts', 'simple_jobs_enqueue_script');
 add_action('admin_enqueue_scripts', 'simple_jobs_enqueue_script');
 
+/**
+ * Enqueuing the js and css files on frontend
+ */
+function simple_jobs_enqueue_frontend_css() {
+    wp_enqueue_style( 'simple_jobs_frontend', plugin_dir_url( __FILE__ ) . 'css/front.css');
+}
+add_action('wp_enqueue_scripts', 'simple_jobs_enqueue_frontend_css');
+
 
 /**
  * Returning the button so that user can request for lead details
@@ -424,7 +432,7 @@ function request_additional_fields_button( $postId ) {
 					return;	
 				}
 				else {
-					return "<button class=''>Already Requested</button>";
+					return "<button class='userRequestedToJob'>Already Requested</button>";
 				}
 			}
 			else {
@@ -451,10 +459,10 @@ function show_fields_after_registration( $postId ) {
 			$client_address = get_post_meta($postId, '_client_address', ARRAY_A);
 			$client_email 	= get_post_meta($postId, '_client_email', ARRAY_A);
 			$client_telephone_number = get_post_meta($postId, '_client_telephone_number', ARRAY_A);
-			return "<div>client Name: $client_name<div/>
-			<div>client Address: $client_address<div/>
-			<div>client Email: $client_email<div/>
-			<div>client Telephone Number: $client_telephone_number<div/>";
+			return "<div class='jobClientName'>client Name: $client_name<div/>
+			<div class='jobClientAddress'>client Address: $client_address<div/>
+			<div class='jobClientEmail'>client Email: $client_email<div/>
+			<div class='jobClientPhone'>client Telephone Number: $client_telephone_number<div/>";
 		}
 		else {
 			return;
@@ -474,10 +482,10 @@ function show_common_fields( $postId ) {
 	if($categories) {
 		foreach ($categories as $key => $category) {
 			if($key == 0) {
-				$categoryHtml .= "<span class='blog-categories'>".$category->name."</span>";
+				$categoryHtml .= "<span class='jobCategories first'>".$category->name."</span>";
 			}
 			else {
-				$categoryHtml .= "<span class='blog-categories'>, ".$category->name."</span>";
+				$categoryHtml .= "<span class='jobCategories others'>, ".$category->name."</span>";
 			}
 		}
 	}
@@ -490,16 +498,16 @@ function show_common_fields( $postId ) {
 
 	return '<div class="col-md-12">
 		<div class="row">
-			<h1 class="post-title entry-title "><a href="'.$link.'" >'.$title.'</a></h1>
-			<div class="col-md-12">'.$categoryHtml.'</div>
+			<h1 class="post-title entry-title jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
+			<div class="col-md-12 jobCategoriesWrapper">'.$categoryHtml.'</div>
 		</div>
 		<div class="row">
-			<div class="col-md-4">Date: '.$post_date.'</div>
-			<div class="col-md-4">Location: '.$job_location.'</div>
-			<div class="col-md-4">Salary: '.$job_salary.'</div>
+			<div class="col-md-4 jobDate">Date: '.$post_date.'</div>
+			<div class="col-md-4 jobLocation">Location: '.$job_location.'</div>
+			<div class="col-md-4 jobSalary">Salary: '.$job_salary.'</div>
 		</div>
 		<div class="row">
-			<div class="row">'.$description.'</div>
+			<div class="row jobDescription">'.$description.'</div>
 		</div>
 	</div>';
 }

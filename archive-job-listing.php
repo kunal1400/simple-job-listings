@@ -1,4 +1,9 @@
 <?php
+if( !is_user_logged_in() ) {
+	wp_redirect( home_url() );
+	exit;
+}
+
 get_header();
 
 $selectedId = 0;
@@ -16,11 +21,12 @@ $jobCategories 	= get_terms( array(
 
 <div class="container">
 	<div class="row">
-		<form method="get" class="form-inline" action="">
+		<form id="jobFilterForm" method="get" class="form-inline" action="">
 			<div class="form-group">
 				<?php 
 				if($jobCategories) {
-					echo  '<label for="jobCategory">Category</label><select name="term_id">
+					echo  '<label for="jobCategory">Category</label>
+					<select name="term_id">
 					<option value="">Select</option>';
 					foreach ($jobCategories as $i => $jobCategory) {
 						if($selectedId == $jobCategory->term_id) {
@@ -53,13 +59,13 @@ if($selectedId != 0) {
 
 $the_query = new WP_Query( $args ); 
 ?>
-<section id="primary" class="container">
-	<main id="main" class="row">
+<section id="jobDataSection" class="container">
+	<main id="jobDataMain" class="row">
 		<?php if ( $the_query->have_posts() ) : ?>
 			<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
-				<article id="post-<?php the_ID(); ?>" class="col-md-12">
-					<div><?php echo show_common_fields( get_the_ID() ) ?></div>
-					<div class="commonFieldsSection">
+				<article id="post-<?php the_ID(); ?>" class="col-md-12 jobData">
+					<div class="commonFieldsSection"><?php echo show_common_fields( get_the_ID() ) ?></div>
+					<div class="approvedFieldsSection">
 						<?php echo show_fields_after_registration( get_the_ID() ) ?>
 					</div>
 					<div class="requestedFieldsSection">
