@@ -16,12 +16,6 @@ get_header();
 			?>
 			<article id="post-<?php the_ID(); ?>" class="col-md-12 jobData">
 				<div class="commonFieldsSection"><?php echo show_common_fields( get_the_ID() ) ?></div>
-				<div class="approvedFieldsSection">
-					<?php echo show_fields_after_registration( get_the_ID() ) ?>
-				</div>
-				<div class="requestedFieldsSection">
-					<?php echo request_additional_fields_button( get_the_ID() ); ?>
-				</div>			
 			</article>			
 		<?php
 			// If comments are open or we have at least one comment, load up the comment template.

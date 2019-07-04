@@ -25,9 +25,8 @@ $jobCategories 	= get_terms( array(
 			<div class="form-group">
 				<?php 
 				if($jobCategories) {
-					echo  '<label for="jobCategory">Category</label>
-					<select name="term_id">
-					<option value="">Select</option>';
+					echo  '<select name="term_id" class="form-control">
+					<option value="">Select Category</option>';
 					foreach ($jobCategories as $i => $jobCategory) {
 						if($selectedId == $jobCategory->term_id) {
 							echo '<option selected value="'.$jobCategory->term_id.'">'.$jobCategory->name.'</option>';
@@ -40,7 +39,7 @@ $jobCategories 	= get_terms( array(
 				}
 				?>
 			</div>			
-			<button type="submit" class="btn btn-default">Filter</button>
+			<button type="submit" class="filterButton">Filter</button>
 		</form>
 	</div>
 </div>
@@ -63,14 +62,8 @@ $the_query = new WP_Query( $args );
 	<main id="jobDataMain" class="row">
 		<?php if ( $the_query->have_posts() ) : ?>
 			<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
-				<article id="post-<?php the_ID(); ?>" class="col-md-12 jobData">
+				<article id="post-<?php the_ID(); ?>" class="col-md-12 jobData border">
 					<div class="commonFieldsSection"><?php echo show_common_fields( get_the_ID() ) ?></div>
-					<div class="approvedFieldsSection">
-						<?php echo show_fields_after_registration( get_the_ID() ) ?>
-					</div>
-					<div class="requestedFieldsSection">
-						<?php echo request_additional_fields_button( get_the_ID() ); ?>
-					</div>
 				</article>
 			<?php endwhile; ?>
 			<?php wp_reset_postdata(); ?>

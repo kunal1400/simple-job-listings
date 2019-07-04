@@ -1,57 +1,26 @@
-#jobFilterForm {
-
+.border {	
+    border: 1px solid #e2e2e2;
+    padding: 15px;
+    margin-bottom: 15px;
 }
 .jobData {
-
-}
-.commonFieldsSection {
-
-}
-.requestedFieldsSection {
-
-}
-.approvedFieldsSection {
-
-}
-.jobClientName {
-
-}
-.jobClientAddress {
-
-}
-.jobClientEmail {
-
-}
-.jobClientPhone {
-
+    position: relative;
+    overflow: hidden;
 }
 .jobCategories {
-
+    color: #ccc;
 }
-.jobCategories .first {
-
+.requestLeadDetails {
+    background-color: #0ea432;
+    color: #fff;
+    border: none;
+    padding: 15px 15px;
+    border-radius: 5px;
 }
-.jobCategories .others {
-
-}
-.jobTitle {
-
-}
-.jobDescription {
-
-}
-.jobLocation{
-
-}
-.jobSalary{
-
-}
-.jobDate{
-	
-}
-.jobCategoriesWrapper{
-
-}
-.userRequestedToJob{
-	
+.filterButton {
+	background-color: #11abd6;
+    color: #fff;
+    border: none;
+    padding: 15px 15px;
+    border-radius: 5px;	
 }

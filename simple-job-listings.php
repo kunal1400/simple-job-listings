@@ -492,24 +492,61 @@ function show_common_fields( $postId ) {
 
 	if( is_single()	) {
 		$description = get_the_content($postId);
+		return '<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<h1 class="post-title entry-title jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
+					<div class="jobCategoriesWrapper">'.$categoryHtml.'</div>
+				</div>
+			</div>
+			<div class="row">			
+				<div class="col-md-12">
+					<div class="jobDate">Date: '.$post_date.'</div>
+					<div class="jobLocation">Location: '.$job_location.'</div>
+					<div class="jobSalary">Salary: '.$job_salary.'</div>
+				</div>
+				<div class="col-md-12">
+					<div class="jobDescription">'.$description.'</div>
+				</div>
+				<div class="col-md-12">
+					<div class="requestedFieldsSection">
+						'.request_additional_fields_button($postId).'
+					</div>
+					<div class="approvedFieldsSection">
+						'.show_fields_after_registration($postId).'
+					</div>				
+				</div>
+			</div>		
+		</div>';
 	} else {
-		$description = get_the_excerpt($postId);		
+		$description = get_the_excerpt($postId);
+			return '<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-12">
+						<h1 class="post-title entry-title jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
+						<div class="jobCategoriesWrapper">'.$categoryHtml.'</div>
+					</div>
+				</div>
+				<div class="row">			
+					<div class="col-md-3">
+						<div class="jobDate">Date: '.$post_date.'</div>
+						<div class="jobLocation">Location: '.$job_location.'</div>
+						<div class="jobSalary">Salary: '.$job_salary.'</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row jobDescription">'.$description.'</div>
+					</div>
+					<div class="col-md-3">
+						<div class="requestedFieldsSection">
+							'.request_additional_fields_button($postId).'
+						</div>
+						<div class="approvedFieldsSection">
+							'.show_fields_after_registration($postId).'
+						</div>				
+					</div>
+				</div>		
+			</div>';
 	}
-
-	return '<div class="col-md-12">
-		<div class="row">
-			<h1 class="post-title entry-title jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
-			<div class="col-md-12 jobCategoriesWrapper">'.$categoryHtml.'</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4 jobDate">Date: '.$post_date.'</div>
-			<div class="col-md-4 jobLocation">Location: '.$job_location.'</div>
-			<div class="col-md-4 jobSalary">Salary: '.$job_salary.'</div>
-		</div>
-		<div class="row">
-			<div class="row jobDescription">'.$description.'</div>
-		</div>
-	</div>';
 }
 
 /**
