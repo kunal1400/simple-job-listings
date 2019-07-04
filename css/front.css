@@ -1035,7 +1035,8 @@ hr {
 .jobCategories {
     color: #ccc;
 }
-.requestLeadDetails {
+.requestLeadDetails,
+.userRequestedToJob {
     background-color: #0ea432;
     color: #fff;
     border: none;
