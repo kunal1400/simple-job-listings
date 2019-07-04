@@ -50,10 +50,11 @@ function write_here_default_options(){
 	update_option("reject_lead_info_subject", "Decision to view Lead Information");
 	// email body
 	update_option("request_lead_info_message", "Your request to view details for {{jobTitle}} successfully submitted, we will check your request and made descission. You will also be notified on email also.");
-	update_option("approve_lead_info_message", "Your request to view lead information for {{jobTitle}} has been successfully approved \n below are the lead information:\nclient_name: {{clientName}}
-		\nclient_address: {{clientAddress}}
-		\nclient_email:  {{clientEmail}}
-		\nclient_telephone_number: {{clientMobile}}");
+	update_option("approve_lead_info_message", "Your request to view lead information for {{jobTitle}} has been successfully approved below are the lead information:\n
+		Client Name: {{clientName}}
+		\nClient Address: {{clientAddress}}
+		\nClient Email:  {{clientEmail}}
+		\nClient Telephone Number: {{clientMobile}}");
 	update_option("reject_lead_info_message", "Your request to view lead information for {{jobTitle}} has been rejected");
 }
 add_action( 'wp_writehere_extension_activation', 'write_here_default_options' );
