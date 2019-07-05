@@ -1025,8 +1025,11 @@ hr {
 **/
 .border {	
     border: 1px solid #e2e2e2;
-    padding: 15px;
+    padding: 15px 0;
     margin-bottom: 15px;
+}
+.padding15 {
+  padding: 15px;
 }
 .jobData {
     position: relative;
@@ -1049,4 +1052,8 @@ hr {
     border: none;
     padding: 15px 15px;
     border-radius: 5px;	
+}
+
+.activeCatergory a {
+  border-bottom: 1px dotted !important;
 }

@@ -477,8 +477,13 @@ function show_common_fields( $postId ) {
 	$job_location = get_post_meta($postId, '_job_location', ARRAY_A);
 	$job_salary   = get_post_meta($postId, '_job_salary', ARRAY_A);
 	$categories   = get_the_terms( $postId, 'simple_job_categories' );	
-	$categoryHtml = "";
+	$postDate     = get_the_date( "", $postId );
+	$imageSrc 	  = get_the_post_thumbnail_url($postId, 'post-thumbnail');	
+	if(empty($imageSrc)) {
+		$imageSrc = plugin_dir_url(__FILE__).'images/logo.png';
+	}
 
+	$categoryHtml = "";
 	if($categories) {
 		foreach ($categories as $key => $category) {
 			if($key == 0) {
@@ -495,16 +500,22 @@ function show_common_fields( $postId ) {
 		return '<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-12">
-					<h1 class="post-title entry-title jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
-					<div class="jobCategoriesWrapper">'.$categoryHtml.'</div>
+					<h1 class="jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
+					<div class="jobCategoriesWrapper">
+						<span class="postDate">Posted On:'.$postDate.'</span>
+						<span class="postDate">Categories:'.$categoryHtml.'</span>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<img src="'.$imageSrc.'" class="img-response" />
+					<div class="jobOtherDetails">							
+						<span class="jobDate">Date: '.$post_date.'</span>
+						<span class="jobLocation">Location: '.$job_location.'</span>
+						<span class="jobSalary">Estimated Job Value: '.$job_salary.'</span>
+					</div>
 				</div>
 			</div>
-			<div class="row">			
-				<div class="col-md-12">
-					<div class="jobDate">Date: '.$post_date.'</div>
-					<div class="jobLocation">Location: '.$job_location.'</div>
-					<div class="jobSalary">Salary: '.$job_salary.'</div>
-				</div>
+			<div class="row">				
 				<div class="col-md-12">
 					<div class="jobDescription">'.$description.'</div>
 				</div>
@@ -522,29 +533,37 @@ function show_common_fields( $postId ) {
 		$description = get_the_excerpt($postId);
 			return '<div class="col-md-12">
 				<div class="row">
-					<div class="col-md-12">
-						<h1 class="post-title entry-title jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
-						<div class="jobCategoriesWrapper">'.$categoryHtml.'</div>
+					<div class="col-md-3"></div>
+					<div class="col-md-6">
+						<h1 class="jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
 					</div>
 				</div>
-				<div class="row">			
+				<div class="row">
 					<div class="col-md-3">
-						<div class="jobDate">Date: '.$post_date.'</div>
-						<div class="jobLocation">Location: '.$job_location.'</div>
-						<div class="jobSalary">Salary: '.$job_salary.'</div>
+						<a href="'.$link.'"><img src="'.$imageSrc.'" class="img-response" /></a>						
 					</div>
 					<div class="col-md-6">
-						<div class="row jobDescription">'.$description.'</div>
+						<div class="jobCategoriesWrapper">
+							<span class="postDate">Post Date:'.$postDate.'</span>
+							<span class="postDate">Categories:'.$categoryHtml.'</span>
+						</div>
+						<div class="jobDescription">'.$description.'</div>												
 					</div>
 					<div class="col-md-3">
+						<div class="jobOtherDetails">							
+							<div class="jobDate">Date: '.$post_date.'</div>
+							<div class="jobLocation">Location: '.$job_location.'</div>
+							<div class="jobSalary">Estimated Job Value: '.$job_salary.'</div>
+						</div>
+						<hr/>
 						<div class="requestedFieldsSection">
 							'.request_additional_fields_button($postId).'
 						</div>
 						<div class="approvedFieldsSection">
 							'.show_fields_after_registration($postId).'
-						</div>				
+						</div>
 					</div>
-				</div>		
+				</div>				
 			</div>';
 	}
 }
