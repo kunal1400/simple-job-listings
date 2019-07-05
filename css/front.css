@@ -1035,9 +1035,6 @@ hr {
     position: relative;
     overflow: hidden;
 }
-.jobCategories {
-    color: #ccc;
-}
 .requestLeadDetails,
 .userRequestedToJob {
     background-color: #0ea432;
@@ -1053,7 +1050,23 @@ hr {
     padding: 15px 15px;
     border-radius: 5px;	
 }
-
 .activeCatergory a {
   border-bottom: 1px dotted !important;
+}
+
+.singleJobListing .jobTitle,
+.singleJobListing .jobCategoriesWrapper,
+.singleJobListing .jobOtherDetails,
+.singleJobListing .jobDescription {
+  text-align: center;
+}
+
+.jobCategoriesWrapper > span,
+.jobOtherDetails > span {
+  margin-right: 10px;
+}
+
+.singleJobListing .jobDescription,
+.singleJobListing .jobOtherDetails {
+    padding-top: 20px;
 }

@@ -477,11 +477,7 @@ function show_common_fields( $postId ) {
 	$job_location = get_post_meta($postId, '_job_location', ARRAY_A);
 	$job_salary   = get_post_meta($postId, '_job_salary', ARRAY_A);
 	$categories   = get_the_terms( $postId, 'simple_job_categories' );	
-	$postDate     = get_the_date( "", $postId );
-	$imageSrc 	  = get_the_post_thumbnail_url($postId, 'post-thumbnail');	
-	if(empty($imageSrc)) {
-		$imageSrc = plugin_dir_url(__FILE__).'images/logo.png';
-	}
+	$postDate     = get_the_date( "", $postId );	
 
 	$categoryHtml = "";
 	if($categories) {
@@ -496,6 +492,10 @@ function show_common_fields( $postId ) {
 	}
 
 	if( is_single()	) {
+		$imageSrc 	  = get_the_post_thumbnail_url($postId, 'full');	
+		if(empty($imageSrc)) {
+			$imageSrc = plugin_dir_url(__FILE__).'images/logo.png';
+		}
 		$description = get_the_content($postId);
 		return '<div class="col-md-12">
 			<div class="row">
@@ -519,6 +519,7 @@ function show_common_fields( $postId ) {
 				<div class="col-md-12">
 					<div class="jobDescription">'.$description.'</div>
 				</div>
+				<hr/>
 				<div class="col-md-12">
 					<div class="requestedFieldsSection">
 						'.request_additional_fields_button($postId).'
@@ -530,6 +531,10 @@ function show_common_fields( $postId ) {
 			</div>		
 		</div>';
 	} else {
+		$imageSrc = get_the_post_thumbnail_url($postId, 'post-thumbnail');	
+		if(empty($imageSrc)) {
+			$imageSrc = plugin_dir_url(__FILE__).'images/logo.png';
+		}
 		$description = get_the_excerpt($postId);
 			return '<div class="col-md-12">
 				<div class="row">
