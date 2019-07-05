@@ -8,7 +8,7 @@ if( !is_user_logged_in() ) {
 get_header();
 ?>
 <section id="jobDataSection" class="container singleJobListing">
-	<div class="content">
+	<div class="ccontent">
 		<main id="jobDataMain" class="row">
 			<?php
 			/* Start the Loop */

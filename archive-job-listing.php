@@ -34,7 +34,7 @@ $the_query = new WP_Query( $args );
 ?>
 
 <div class="container">
-	<div class="content">
+	<div class="ccontent">
 		<div class="row">
 			<div class="col-md-4">
 				<div class="border padding15">
