@@ -483,10 +483,10 @@ function show_common_fields( $postId ) {
 	if($categories) {
 		foreach ($categories as $key => $category) {
 			if($key == 0) {
-				$categoryHtml .= "<span class='jobCategories first'>".$category->name."</span>";
+				$categoryHtml .= "<b><span class='jobCategories first'>".$category->name."</span></b>";
 			}
 			else {
-				$categoryHtml .= "<span class='jobCategories others'>, ".$category->name."</span>";
+				$categoryHtml .= "<b><span class='jobCategories others'>, ".$category->name."</span></b>";
 			}
 		}
 	}
@@ -536,29 +536,20 @@ function show_common_fields( $postId ) {
 			$imageSrc = plugin_dir_url(__FILE__).'images/logo.png';
 		}
 		$description = get_the_excerpt($postId);
-			return '<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-md-6">
-						<h1 class="jobTitle"><a href="'.$link.'" >'.$title.'</a></h1>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3">
-						<a href="'.$link.'"><img src="'.$imageSrc.'" class="img-response" /></a>						
-					</div>
-					<div class="col-md-6">
+			return '<div class="col-md-12">				
+				<div class="row">					
+					<div class="col-md-8">
+						<h1 class="jobTitle">'.$title.'</h1>
 						<div class="jobCategoriesWrapper">
-							<span class="postDate">Post Date:'.$postDate.'</span>
-							<span class="postDate">Categories:'.$categoryHtml.'</span>
+							<span class="postDate">'.$categoryHtml.'</span>
 						</div>
-						<div class="jobDescription">'.$description.'</div>												
+						<div class="jobDescription">'.$description.'</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div class="jobOtherDetails">							
-							<div class="jobDate">Date: '.$post_date.'</div>
-							<div class="jobLocation">Location: '.$job_location.'</div>
-							<div class="jobSalary">Estimated Job Value: '.$job_salary.'</div>
+							<div class="jobDate"><b>Date</b>: '.$post_date.'</div>
+							<div class="jobLocation"><b>Location</b>: '.$job_location.'</div>
+							<div class="jobSalary"><b>Estimated Job Value</b>: '.$job_salary.'</div>
 						</div>
 						<hr/>
 						<div class="requestedFieldsSection">
